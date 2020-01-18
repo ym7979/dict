@@ -44,8 +44,27 @@ def do_login():
     data = s.recv(128).decode()
     if data == "OK":
         print("登录成功")
+        # login()  # 调用二级界面
     else:
         print("登录失败")
+
+# # 登陆后的二级界面
+# def login():
+#     while True:
+#         print("""
+#         ==================Query=====================
+#         1.查单词         2.历史记录            3.注销
+#         ============================================
+#         """)
+#         cmd=input("输入选项：")
+#         if cmd=="1":
+#             pass
+#         elif cmd=="2":
+#             pass
+#         elif cmd=="3":
+#             return
+#         else:
+#             print("请输入正确命令")
 
 
 # 网路连接
