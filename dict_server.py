@@ -59,7 +59,7 @@ def main():
     s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
     s.bind(ADDR)
     s.listen(3)
-
+    #处理僵尸进程
     signal.signal(signal.SIGCHLD, signal.SIG_IGN)
     # 循环等待客户端连接
     print("Listen the port 7979")
