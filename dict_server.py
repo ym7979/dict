@@ -27,6 +27,14 @@ def do_register(connfd,name,passwd):
         connfd.send(b"FAIL")
 
 
+# 查单词
+def do_query(connfd,name,word):
+    # data-->mean /None
+    data=db.query(word)
+    if data:
+        msg=
+
+
 def handle(connfd):
     while True:
         request=connfd.recv(1024).decode()

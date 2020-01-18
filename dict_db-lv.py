@@ -1,4 +1,11 @@
 import pymysql
+import hashlib
+
+# 传入一个密码返回加密后的密码
+def change_passwd(passwd):
+    hash = hashlib.md5()  # md5对象
+    hash.update(passwd.encode())  # 加密
+    return hash.hexdigest()
 
 class Database:
     def __init__(self):
@@ -25,7 +32,8 @@ class Database:
         if self.cur.fetchone():
             return False
         # 插入数据库
-        sql="insert into user (name,passwd) values (%s,%s);"
+        sql="insert into user (name,password) values (%s,%s);"
+        passwd = change_passwd(passwd) # 密码加密
         try:
             self.cur.execute(sql,[name,passwd])
             self.db.commit()
@@ -35,7 +43,24 @@ class Database:
             return False
 
     def login(self,name,passwd):
-        pass
+        sql = "select name from user " \
+              "where name=%s and passwd=%s;"
+        passwd = change_passwd(passwd)
+        self.cur.execute(sql,[name,passwd])
+        if self.cur.fetchone():
+            return True
+        else:
+            return False
+
+
+
+    def query(self,word):
+        sql="select mean from words where word=%s;"
+        self.cur.execute(sql,[word])
+        r=self.cur.fetchone()
+        #r-->(xxx) ,None
+        if r :
+            return r[0]
 
 if __name__ == '__main__':
     db = Database()
