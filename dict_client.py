@@ -44,12 +44,12 @@ def do_login():
     data = s.recv(128).decode()
     if data == "OK":
         print("登录成功")
-        login()  # 调用二级界面
+        login(name)  # 调用二级界面
     else:
         print("登录失败")
 
 # 登陆后的二级界面
-def login():
+def login(name):
     while True:
         print("""
         ==================Query=====================
@@ -58,13 +58,25 @@ def login():
         """)
         cmd=input("输入选项：")
         if cmd=="1":
-            pass
+            do_query(name)
         elif cmd=="2":
             pass
         elif cmd=="3":
             return
         else:
             print("请输入正确命令")
+
+# 二级界面 查单词
+def do_query(name):
+    while True:
+        word=input("Word:")
+        if word=="##":
+            break
+        msg="Q %s %s"%(name,word)
+        s.send(msg.encode())
+        #直接打印得到的结果，即单词解释
+        data=s.recv(2048).decode()
+        print(data)
 
 
 # 网路连接

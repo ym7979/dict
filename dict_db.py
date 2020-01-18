@@ -5,7 +5,7 @@ import pymysql
 
 def change_passwd(passwd):
     hash = hashlib.md5()  # 使用md5对象加密
-    hash.update(passwd.encode())#加密（只可用字节串）
+    hash.update(passwd.encode())  # 加密（只可用字节串）
     return hash.hexdigest()
 
 
@@ -35,7 +35,7 @@ class Database:
             return False
         # 插入数据库
         sql = "insert into user (name,password) values(%s,%s);"
-        passwd=change_passwd(passwd)#在数据库中密码加密
+        passwd = change_passwd(passwd)  # 在数据库中密码加密
         try:
             self.cur.execute(sql, [name, passwd])
             self.db.commit()
@@ -48,12 +48,19 @@ class Database:
         sql = "select name from user " \
               "where name=%s and password=%s;"
         passwd = change_passwd(passwd)
-        self.cur.execute(sql,[name,passwd])
+        self.cur.execute(sql, [name, passwd])
         if self.cur.fetchone():
             return True
         else:
-            return  False
+            return False
 
+    def query(self, word):  # 查单词
+        sql="select mean from words where word=%s;"
+        self.cur.execute(sql,[word])
+        r=self.cur.fetchone()
+        #r-->(xxx,) None  若能查到返回元祖
+        if r:
+            return r[0]
 
 if __name__ == '__main__':
     db = Database()
