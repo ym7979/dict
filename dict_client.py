@@ -1,7 +1,9 @@
 """
 dict 客户端
+
 """
-from getpass import getpass #隐藏密码
+import sys
+from getpass import getpass  # 隐藏密码
 from socket import *
 
 # 服务器地址
@@ -33,6 +35,18 @@ def do_register():
         return
 
 
+# 登录
+def do_login():
+    name = input("User:")
+    passwd = input("Password:")
+    msg = "L %s %s" % (name, passwd)
+    s.send(msg.encode())  # 发送请求
+    data = s.recv(128).decode()
+    if data == "OK":
+        print("登录成功")
+    else:
+        print("登录失败")
+
 
 # 网路连接
 def main():
@@ -43,9 +57,15 @@ def main():
         ==================================================      
         """)
         cmd = input("输入选项：")
-        s.send(cmd.encode())
         if cmd == "1":
             do_register()  # 注册
+        elif cmd == "2":
+            do_login()  # 登录
+        elif cmd == "3":  # 退出
+            s.send(b"E")
+            sys.exit("谢谢使用")
+        else:
+            print("登录失败")
 
 
 if __name__ == '__main__':
